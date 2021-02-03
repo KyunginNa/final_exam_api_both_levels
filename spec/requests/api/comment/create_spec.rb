@@ -22,4 +22,24 @@ RSpec.describe 'POST /api/articles/:article_id/comments', type: :request do
       expect(response_json['message']).to eq 'Your comment was created successfully!'
     end
   end
+
+  describe "unsuccessfully" do
+    before do
+      post "/api/articles/#{article.id}/comments",
+        params: {
+          comment: {
+            article_id: article.id
+          }
+        },
+        headers: user_headers
+    end
+
+    it "is expected to return a 422 response" do
+      expect(response).to have_http_status 422 
+    end
+    
+    it "is expected to return an error message" do
+      expect(response_json['message']).to eq "Body can't be blank"
+    end
+  end
 end
