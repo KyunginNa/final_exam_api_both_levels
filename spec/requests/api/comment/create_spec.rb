@@ -8,13 +8,18 @@ RSpec.describe 'POST /api/articles/:article_id/comments', type: :request do
       post "/api/articles/#{article.id}/comments",
         params: {
           comment: {
-            body: 'This is the first comment!'
+            body: 'This is the first comment!',
+            article_id: article.id
           }
         },
         headers: user_headers
     end
     it 'is expected to return a 201 response' do
       expect(response).to have_http_status 201
+    end
+
+    it "is expected to return a success message" do
+      expect(response_json['message']).to eq 'Your comment was created successfully!'
     end
   end
 end
